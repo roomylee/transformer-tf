@@ -3,73 +3,74 @@ import numpy as np
 
 
 class Transformer:
-    def __init__(self, sequence_length, source_vocab_size, target_vocab_size, embedding_size,
-                 hidden_size, num_stack, num_head):
+    def __init__(self, sequence_length, source_vocab_size, target_vocab_size,
+                 hidden_size, ff_hidden_size, num_stack, num_head):
         self.sequence_length = sequence_length
         self.source_vocab_size = source_vocab_size
         self.target_vocab_size = target_vocab_size
-        self.embedding_size = embedding_size
         self.hidden_size = hidden_size
+        self.ff_hidden_size = ff_hidden_size
         self.num_stack = num_stack
         self.num_head = num_head
 
-        self.QK_T = None
-        self.attention = None
-        self.att_V = None
-
-
-        self.build_model()
+        self.build_graph()
 
 
 
-    def build_model(self):
+    def build_graph(self):
         # Placeholders for input, output and dropout
         self.input_source = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='input_source')
         self.input_target = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='input_target')
 
         initializer = tf.contrib.layers.xavier_initializer()
 
-        # Embeddings
-        with tf.device('/cpu:0'), tf.name_scope("embedding"):
-            self.W_embedding = tf.get_variable("W_embedding", dtype=tf.float32,
-                                               shape=[self.source_vocab_size, self.embedding_size],
-                                               initializer=tf.contrib.layers.xavier_initializer())
-            self.embedded_chars = tf.nn.embedding_lookup(self.W_embedding, self.input_source)
+        with tf.name_scope("encoder"):
+            # Embeddings
+            with tf.device('/cpu:0'), tf.name_scope("embedding"):
+                self.W_embedding = tf.get_variable("W_embedding", dtype=tf.float32,
+                                                   shape=[self.source_vocab_size, self.hidden_size],
+                                                   initializer=tf.contrib.layers.xavier_initializer())
+                self.embedded_chars = tf.nn.embedding_lookup(self.W_embedding, self.input_source)
 
 
-        with tf.name_scope("positional-encoding"):
-            # First part of the PE function: sin and cos argument
-            self.position_enc = np.array([[pos / (10000 ** (2*i/self.hidden_size)) for i in range(self.hidden_size)]
-                                          for pos in range(self.sequence_length)])
-            # Second part, apply the cosine to even columns and sin to odds.
-            self.position_enc[:, 0::2] = np.sin(self.position_enc[:, 0::2])  # dim 2i
-            self.position_enc[:, 1::2] = np.cos(self.position_enc[:, 1::2])  # dim 2i+1
-            self.position_enc = tf.convert_to_tensor(self.position_enc, dtype=tf.float32)
+            with tf.name_scope("positional-encoding"):
+                # First part of the PE function: sin and cos argument
+                self.position_enc = np.array([[pos / (10000 ** (2*i/self.hidden_size))
+                                               for i in range(self.hidden_size)]
+                                              for pos in range(self.sequence_length)])
+                # Second part, apply the cosine to even columns and sin to odds.
+                self.position_enc[:, 0::2] = np.sin(self.position_enc[:, 0::2])  # dim 2i
+                self.position_enc[:, 1::2] = np.cos(self.position_enc[:, 1::2])  # dim 2i+1
+                self.position_enc = tf.convert_to_tensor(self.position_enc, dtype=tf.float32)
 
-            self.enc = self.embedded_chars + self.position_enc
+                self.enc = self.embedded_chars + self.position_enc
 
 
-        self.mh = self.multihead_attention(self.enc, self.enc, self.enc)
+            self.mh = self.multihead_attention(self.enc, self.enc, self.enc)
 
-        # for i in range(num_stack):
-        #     with tf.name_scope("stacked-layer-{}".format(i)):
-        #         # Multihead Attention
-        #         self.enc = self.multihead_attention(queries=self.enc,
-        #                                            keys=self.enc,
-        #                                            num_units=hp.hidden_units,
-        #                                            num_heads=hp.num_heads,
-        #                                            dropout_rate=hp.dropout_rate,
-        #                                            is_training=is_training,
-        #                                            causality=False)
-        #
-        #         # Feed Forward
-        #         self.enc = self.feedforward(self.enc, num_units=[4 * hp.hidden_units, hp.hidden_units])
+            for i in range(self.num_stack):
+                with tf.name_scope("stacked-layer-{}".format(i)):
+                    # Multihead Attention
+                    self.enc = self.multihead_attention(query=self.enc,
+                                                        key=self.enc,
+                                                        value=self.enc)
+
+                    # Feed Forward
+                    self.enc = self.feedforward(self.enc, inner_hidden_size=self.ff_hidden_size)
+
+
+
+        with tf.name_scope("decoder"):
+            pass
+
+
+
 
     def scaled_dot_product_attention(self, query, key, value, scaling_factor):
-        self.QK_T = tf.matmul(query, tf.transpose(key, [0, 2, 1]))
-        self.attention = tf.nn.softmax(self.QK_T * scaling_factor)
-        self.att_V = tf.matmul(self.attention, value)
-        return self.att_V
+        QK_T = tf.matmul(query, tf.transpose(key, [0, 2, 1]))
+        attention = tf.nn.softmax(QK_T * scaling_factor)
+        att_V = tf.matmul(attention, value)
+        return att_V
 
     def multihead_attention(self, query, key, value):
         attentions = []
@@ -96,16 +97,20 @@ class Transformer:
 
         W_att = tf.Variable(tf.random_uniform([self.hidden_size, self.hidden_size], -1.0, 1.0))
         b_att = tf.Variable(tf.constant(0.1, shape=[self.hidden_size]))
-        output = tf.tensordot(value, W_att, [[2], [0]]) + b_att
+        output = tf.tensordot(att_concat, W_att, [[2], [0]]) + b_att
 
         return output
 
 
-    def feedforward(self):
-        pass
+    def feedforward(self, x, inner_hidden_size):
+        W1 = tf.Variable(tf.truncated_normal([1, self.hidden_size, self.ff_hidden_size], stddev=0.1), name="W")
+        conv = tf.nn.conv1d(x, W1, stride=1, padding='VALID')
+        W2 = tf.Variable(tf.truncated_normal([1, self.ff_hidden_size, self.hidden_size], stddev=0.1), name="W")
+        conv2 = tf.nn.conv1d(conv, W2, stride=1, padding='VALID')
 
 
     def layer_normalize(self):
+        # conv2 + enc after position_enc
         pass
 
 
