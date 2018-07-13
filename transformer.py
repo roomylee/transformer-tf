@@ -45,20 +45,18 @@ class Transformer:
 
                 self.enc = self.embedded_chars + self.position_enc
 
-
-            self.mh = self.multihead_attention(self.enc, self.enc, self.enc)
+                self.temp = self.enc
 
             for i in range(self.num_stack):
                 with tf.name_scope("stacked-layer-{}".format(i)):
-                    # Multihead Attention
-                    self.enc = self.multihead_attention(query=self.enc,
-                                                        key=self.enc,
-                                                        value=self.enc)
+                    # Multihead Attention (self attention)
+                    self.h_att = self.multihead_attention(query=self.enc,
+                                                          key=self.enc,
+                                                          value=self.enc)
+                    # Position-wise Feed Forward
+                    self.h_ff = self.feedforward(self.enc)
 
-                    # Feed Forward
-                    self.enc = self.feedforward(self.enc, inner_hidden_size=self.ff_hidden_size)
-
-
+                    self.enc = tf.contrib.layers.layer_norm(self.enc + self.h_ff)
 
         with tf.name_scope("decoder"):
             pass
@@ -102,69 +100,15 @@ class Transformer:
         return output
 
 
-    def feedforward(self, x, inner_hidden_size):
-        W1 = tf.Variable(tf.truncated_normal([1, self.hidden_size, self.ff_hidden_size], stddev=0.1), name="W")
-        conv = tf.nn.conv1d(x, W1, stride=1, padding='VALID')
-        W2 = tf.Variable(tf.truncated_normal([1, self.ff_hidden_size, self.hidden_size], stddev=0.1), name="W")
-        conv2 = tf.nn.conv1d(conv, W2, stride=1, padding='VALID')
+    def feedforward(self, x):
+        W1 = tf.Variable(tf.truncated_normal([1, self.hidden_size, self.ff_hidden_size], stddev=0.1))
+        b1 = tf.Variable(tf.constant(0.1, shape=[self.ff_hidden_size]))
+        conv1 = tf.nn.conv1d(x, W1, stride=1, padding='VALID')
+        h1 = tf.nn.relu(tf.nn.bias_add(conv1, b1))
 
+        W2 = tf.Variable(tf.truncated_normal([1, self.ff_hidden_size, self.hidden_size], stddev=0.1))
+        b2 = tf.Variable(tf.constant(0.1, shape=[self.hidden_size]))
+        conv2 = tf.nn.conv1d(h1, W2, stride=1, padding='VALID')
+        h2 = tf.nn.relu(tf.nn.bias_add(conv2, b2))
 
-    def layer_normalize(self):
-        # conv2 + enc after position_enc
-        pass
-
-
-
-
-        # # Bidirectional(Left&Right) Recurrent Structure
-        # with tf.name_scope("bi-lstm"):
-        #     fw_cell = tf.nn.rnn_cell.BasicLSTMCell(hidden_size)
-        #     bw_cell = tf.nn.rnn_cell.BasicLSTMCell(hidden_size)
-        #     (self.output_fw, self.output_bw), states = tf.nn.bidirectional_dynamic_rnn(cell_fw=fw_cell,
-        #                                                                                cell_bw=bw_cell,
-        #                                                                                inputs=self.embedded_chars,
-        #                                                                                sequence_length=text_length,
-        #                                                                                dtype=tf.float32)
-        #     self.H = tf.concat([self.output_fw, self.output_bw], axis=2)
-        #     H_reshape = tf.reshape(self.H, [-1, 2 * hidden_size])
-        #
-        # with tf.name_scope("self-attention"):
-        #     self.W_s1 = tf.get_variable("W_s1", shape=[2*hidden_size, d_a_size], initializer=initializer)
-        #     _H_s1 = tf.nn.tanh(tf.matmul(H_reshape, self.W_s1))
-        #     self.W_s2 = tf.get_variable("W_s2", shape=[d_a_size, r_size], initializer=initializer)
-        #     _H_s2 = tf.matmul(_H_s1, self.W_s2)
-        #     _H_s2_reshape = tf.transpose(tf.reshape(_H_s2, [-1, sequence_length, r_size]), [0, 2, 1])
-        #     self.A = tf.nn.softmax(_H_s2_reshape, name="attention")
-        #
-        # with tf.name_scope("sentence-embedding"):
-        #     self.M = tf.matmul(self.A, self.H)
-        #
-        # with tf.name_scope("fully-connected"):
-        #     # self.M_pool = tf.reduce_mean(self.M, axis=1)
-        #     # W_fc = tf.get_variable("W_fc", shape=[2 * hidden_size, fc_size], initializer=initializer)
-        #     self.M_flat = tf.reshape(self.M, shape=[-1, 2 * hidden_size * r_size])
-        #     W_fc = tf.get_variable("W_fc", shape=[2 * hidden_size * r_size, fc_size], initializer=initializer)
-        #     b_fc = tf.Variable(tf.constant(0.1, shape=[fc_size]), name="b_fc")
-        #     self.fc = tf.nn.relu(tf.nn.xw_plus_b(self.M_flat, W_fc, b_fc), name="fc")
-        #
-        # with tf.name_scope("output"):
-        #     W_output = tf.get_variable("W_output", shape=[fc_size, num_classes], initializer=initializer)
-        #     b_output = tf.Variable(tf.constant(0.1, shape=[num_classes]), name="b_output")
-        #     self.logits = tf.nn.xw_plus_b(self.fc, W_output, b_output, name="logits")
-        #     self.predictions = tf.argmax(self.logits, 1, name="predictions")
-        #
-        # with tf.name_scope("penalization"):
-        #     self.AA_T = tf.matmul(self.A, tf.transpose(self.A, [0, 2, 1]))
-        #     self.I = tf.reshape(tf.tile(tf.eye(r_size), [tf.shape(self.A)[0], 1]), [-1, r_size, r_size])
-        #     self.P = tf.square(tf.norm(self.AA_T - self.I, axis=[-2, -1], ord="fro"))
-        #
-        # # Calculate mean cross-entropy loss
-        # with tf.name_scope("loss"):
-        #     losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=self.input_y)
-        #     self.loss_P = tf.reduce_mean(self.P * p_coef)
-        #     self.loss = tf.reduce_mean(losses) + self.loss_P
-        #
-        # # Accuracy
-        # with tf.name_scope("accuracy"):
-        #     correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, axis=1))
-        #     self.accuracy = tf.reduce_mean(tf.cast(correct_predictions, tf.float32), name="accuracy")
+        return h2
