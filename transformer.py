@@ -111,7 +111,7 @@ class Transformer:
         QK_T = tf.matmul(query, tf.transpose(key, [0, 2, 1]))
         if masked:
             mask = tf.ones_like(QK_T)
-            mask = tf.linalg.LinearOperatorLowerTriangular(mask, tf.float32).to_dense()
+            mask = tf.contrib.linalg.LinearOperatorTriL(mask, tf.float32).to_dense()
             QK_T = tf.matmul(QK_T, mask)
         attention = tf.nn.softmax(QK_T * scaling_factor)
         att_V = tf.matmul(attention, value)

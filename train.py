@@ -7,16 +7,20 @@ from transformer import Transformer
 import data_helpers
 
 
+import nsml
+
 # Parameters
 # ==================================================
 
+
 # Data loading params
-tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of train data")
-tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of train data")
+tf.flags.DEFINE_string("train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of train data")
+tf.flags.DEFINE_string("train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of train data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
 tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in train/test data")
 
 # Model Hyperparameters
+tf.flags.DEFINE_string("word2vec", None, "word2vec")
 tf.flags.DEFINE_integer("hidden_size", 512, "Size of LSTM hidden layer")
 tf.flags.DEFINE_integer("ff_hidden_size", 512, "Size of LSTM hidden layer")
 tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
