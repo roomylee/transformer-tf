@@ -17,9 +17,8 @@ tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training d
 tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in train/test data")
 
 # Model Hyperparameters
-tf.flags.DEFINE_string("word2vec", None, "Word2vec file with pre-trained embeddings")
-tf.flags.DEFINE_integer("embedding_dim", 512, "Dimensionality of word embedding")
 tf.flags.DEFINE_integer("hidden_size", 512, "Size of LSTM hidden layer")
+tf.flags.DEFINE_integer("ff_hidden_size", 512, "Size of LSTM hidden layer")
 tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
 tf.flags.DEFINE_integer("num_head", 8, "Size of LSTM hidden layer")
 
@@ -87,32 +86,11 @@ def train():
                 sequence_length=x_train.shape[1],
                 source_vocab_size=len(source_vocab_processor.vocabulary_),
                 target_vocab_size=len(target_vocab_processor.vocabulary_),
-                embedding_size=FLAGS.embedding_dim,
                 hidden_size=FLAGS.hidden_size,
+                ff_hidden_size=FLAGS.ff_hidden_size,
                 num_stack=FLAGS.num_stack,
                 num_head=FLAGS.num_head
             )
-
-            sess.run(tf.global_variables_initializer())
-
-            feed_dict = {
-                model.input_source: np.ones([64, 10]),
-                model.input_target: np.ones([64, 10]),
-            }
-
-
-            emb, pos, enc, mh= sess.run([model.embedded_chars,
-                                      model.position_enc,
-                                      model.enc,
-                                      model.mh
-                                      ], feed_dict=feed_dict)
-
-            print(mh.shape)
-            print(mh)
-
-            exit(1)
-
-
 
             # Define Training procedure
             global_step = tf.Variable(0, name="global_step", trainable=False)
@@ -169,7 +147,7 @@ def train():
                                 break
                             if ch != '\n':
                                 word.append(ch)
-                        idx = vocab_processor.vocabulary_.get(word)
+                        idx = source_vocab_processor.vocabulary_.get(word)
                         if idx != 0:
                             initW[idx] = np.fromstring(f.read(binary_len), dtype='float32')
                         else:
@@ -186,8 +164,8 @@ def train():
 
                 # Train
                 feed_dict = {
-                    model.input_source: x_batch,
-                    model.input_target: y_batch
+                    model.source: x_batch,
+                    model.target: y_batch
                 }
 
                 _, step, summaries, loss, accuracy = sess.run(
@@ -213,8 +191,8 @@ def train():
                         x_batch_dev, y_batch_dev = zip(*batch_dev)
 
                         feed_dict_dev = {
-                            model.input_text: x_batch_dev,
-                            model.input_y: y_batch_dev
+                            model.source: x_batch_dev,
+                            model.target: y_batch_dev
                         }
 
                         summaries_dev, loss, accuracy = sess.run(
