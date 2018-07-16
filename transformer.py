@@ -19,8 +19,8 @@ class Transformer:
 
     def build_graph(self):
         # Placeholders for input, output and dropout
-        self.input_source = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='input_source')
-        self.input_target = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='input_target')
+        self.source = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='source')
+        self.target = tf.placeholder(tf.int32, shape=[None, self.sequence_length], name='target')
 
         initializer = tf.contrib.layers.xavier_initializer()
 
@@ -30,7 +30,7 @@ class Transformer:
                 self.W_source_embedding = tf.get_variable("W_source_embedding", dtype=tf.float32,
                                                           shape=[self.source_vocab_size, self.hidden_size],
                                                           initializer=initializer)
-                self.source_embedded_chars = tf.nn.embedding_lookup(self.W_source_embedding, self.input_source)
+                self.source_embedded_chars = tf.nn.embedding_lookup(self.W_source_embedding, self.source)
 
 
             with tf.name_scope("positional-encoding"):
@@ -54,7 +54,7 @@ class Transformer:
                 self.W_target_embedding = tf.get_variable("W_target_embedding", dtype=tf.float32,
                                                           shape=[self.target_vocab_size, self.hidden_size],
                                                           initializer=initializer)
-                self.target_embedded_chars = tf.nn.embedding_lookup(self.W_target_embedding, self.input_target)
+                self.target_embedded_chars = tf.nn.embedding_lookup(self.W_target_embedding, self.target)
 
             with tf.name_scope("positional-encoding"):
                 self.dec = self.target_embedded_chars + self.position_encoding()
@@ -78,6 +78,23 @@ class Transformer:
                     self.ff = self.feedforward(self.mh)
                     self.dec = tf.contrib.layers.layer_norm(self.mh + self.ff)
 
+        with tf.name_scope("output"):
+            W_output = tf.get_variable("W_output", shape=[self.hidden_size, self.target_vocab_size], initializer=initializer)
+            b_output = tf.Variable(tf.constant(0.1, shape=[self.target_vocab_size]), name="b_output")
+            self.logits = tf.tensordot(self.dec, W_output, [[2], [0]], name="logits") + b_output
+            self.predictions = tf.to_int32(tf.argmax(self.logits, axis=2, name="predictions"))
+
+        # Calculate mean cross-entropy loss
+        with tf.name_scope("loss"):
+            target_one_hot = tf.one_hot(self.target, depth=self.target_vocab_size)
+            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=target_one_hot)
+            self.istarget = tf.to_float(tf.not_equal(self.target, 0))
+            self.loss = tf.reduce_mean(losses*self.istarget)
+
+        # Accuracy
+        with tf.name_scope("accuracy"):
+            self.accuracy = tf.reduce_sum(tf.to_float(tf.equal(self.predictions, self.target)) * self.istarget)\
+                            / tf.reduce_sum(self.istarget)
 
     def position_encoding(self):
         # First part of the PE function: sin and cos argument
@@ -93,8 +110,8 @@ class Transformer:
     def scaled_dot_product_attention(self, query, key, value, scaling_factor, masked):
         QK_T = tf.matmul(query, tf.transpose(key, [0, 2, 1]))
         if masked:
-            mask = tf.ones([self.hidden_size, self.hidden_size])
-            mask = tf.contrib.linalg.LinearOperatorTriL(mask, tf.float32).to_dense()
+            mask = tf.ones_like(QK_T)
+            mask = tf.linalg.LinearOperatorLowerTriangular(mask, tf.float32).to_dense()
             QK_T = tf.matmul(QK_T, mask)
         attention = tf.nn.softmax(QK_T * scaling_factor)
         att_V = tf.matmul(attention, value)
