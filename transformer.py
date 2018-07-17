@@ -67,30 +67,32 @@ class Transformer:
                         self.ff = self.feedforward(self.mh, hidden_size, ff_hidden_size)
                         self.dec = tf.contrib.layers.layer_norm(self.mh + self.ff)
 
-        with tf.name_scope("output"):
+        with tf.variable_scope("output"):
             self.logits = tf.layers.dense(self.dec, target_vocab_size, activation=tf.nn.relu, name="logits")
             self.predictions = tf.to_int32(tf.argmax(self.logits, axis=2, name="predictions"))
 
         # Calculate mean cross-entropy loss
-        with tf.name_scope("loss"):
+        with tf.variable_scope("loss"):
             target_one_hot = tf.one_hot(self.target, depth=target_vocab_size)
-            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=target_one_hot)
-            self.is_target = tf.to_float(tf.not_equal(self.target, 0))
-            self.loss = tf.reduce_mean(losses*self.is_target)
+            self.losses = losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=target_one_hot)
+            self.is_target = is_target = tf.to_float(tf.not_equal(self.target, 0))
+            self.loss = tf.reduce_sum(losses*is_target) / tf.reduce_sum(is_target)
 
         # Accuracy
-        with tf.name_scope("accuracy"):
-            self.accuracy = tf.reduce_sum(tf.to_float(tf.equal(self.predictions, self.target)) * self.is_target)\
-                            / tf.reduce_sum(self.is_target)
+        with tf.variable_scope("accuracy"):
+            self.accuracy = tf.reduce_sum(tf.to_float(tf.equal(self.predictions, self.target)) * is_target)\
+                            / tf.reduce_sum(is_target)
 
     @ staticmethod
     def position_encoding(sequence_length, hidden_size):
         # First part of the PE function: sin and cos argument
         position_enc = np.array([[pos / (10000 ** (2 * i / hidden_size)) for i in range(hidden_size)] for pos in range(sequence_length)])
+
         # Second part, apply the cosine to even columns and sin to odds.
         position_enc[:, 0::2] = np.sin(position_enc[:, 0::2])  # dim 2i
         position_enc[:, 1::2] = np.cos(position_enc[:, 1::2])  # dim 2i+1
         output = tf.convert_to_tensor(position_enc, dtype=tf.float32)
+
         return output
 
     @staticmethod
@@ -108,8 +110,9 @@ class Transformer:
                 QK_T = tf.matmul(Q, tf.transpose(K, [0, 2, 1]))
                 if masked:
                     mask = tf.ones_like(QK_T)
-                    # mask = tf.contrib.linalg.LinearOperatorTriL(mask, tf.float32).to_dense()
-                    mask = tf.linalg.LinearOperatorLowerTriangular(mask, tf.float32).to_dense()
+                    mask = tf.contrib.linalg.LinearOperatorTriL(mask, tf.float32).to_dense()
+                    # Tensorflow >= 1.5.0
+                    # mask = tf.linalg.LinearOperatorLowerTriangular(mask, tf.float32).to_dense()
                     QK_T = tf.matmul(QK_T, mask)
                 attention = tf.nn.softmax(QK_T * tf.sqrt(1/dim_k))
                 att_V = tf.matmul(attention, V)
@@ -125,6 +128,7 @@ class Transformer:
     def feedforward(x, hidden_size, ff_hidden_size):
         # First Convolution
         output = tf.layers.conv1d(inputs=x, filters=ff_hidden_size, kernel_size=1, activation=tf.nn.relu)
+
         # Second Convolution
         output = tf.layers.conv1d(inputs=output, filters=hidden_size, kernel_size=1, activation=tf.nn.relu)
 

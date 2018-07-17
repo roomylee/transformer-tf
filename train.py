@@ -6,7 +6,6 @@ import time
 from transformer import Transformer
 import data_helpers
 
-
 import nsml
 
 # Parameters
@@ -14,12 +13,12 @@ import nsml
 
 
 # Data loading params
-# tf.flags.DEFINE_string("train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of train data")
-# tf.flags.DEFINE_string("train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of train data")
-tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of train data")
-tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of train data")
+tf.flags.DEFINE_string("nsml_train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of corpora data")
+tf.flags.DEFINE_string("nsml_train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of corpora data")
+tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of corpora data")
+tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of corpora data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
-tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in train/test data")
+tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in corpora/test data")
 
 # Model Hyperparameters
 tf.flags.DEFINE_string("word2vec", None, "word2vec")
@@ -29,6 +28,7 @@ tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
 tf.flags.DEFINE_integer("num_head", 8, "Size of LSTM hidden layer")
 
 # Training parameters
+tf.flags.DEFINE_boolean("nsml", False, "training by NSML")
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
 tf.flags.DEFINE_integer("num_epochs", 10, "Number of training epochs")
 tf.flags.DEFINE_integer("display_every", 10, "Number of iterations to display training info.")
@@ -47,13 +47,18 @@ FLAGS = tf.flags.FLAGS
 
 def train():
     with tf.device('/cpu:0'):
-        source, target = data_helpers.load_train_data(FLAGS.train_source_dir,
-                                                      FLAGS.train_target_dir,
-                                                      FLAGS.max_sentence_length)
+        if FLAGS.nsml:
+            source, target = data_helpers.load_train_data(FLAGS.nsml_train_source_dir,
+                                                          FLAGS.nsml_train_target_dir,
+                                                          FLAGS.max_sentence_length)
+        else:
+            source, target = data_helpers.load_train_data(FLAGS.train_source_dir,
+                                                          FLAGS.train_target_dir,
+                                                          FLAGS.max_sentence_length)
 
     # Build vocabulary
     # Example: x_text[3] = "A misty ridge uprises from the surge."
-    # ['a misty ridge uprises from the surge <UNK> <UNK> ... <UNK>']
+    # ['a misty ridge uprises from the surge __EOS__ __UNK__ ... __UNK__']
     # =>
     # [27 39 40 41 42  1 43  0  0 ... 0]
     # dimension = FLAGS.max_sentence_length
@@ -75,7 +80,7 @@ def train():
     x_shuffled = x[shuffle_indices]
     y_shuffled = y[shuffle_indices]
 
-    # Split train/test set
+    # Split corpora/test set
     # TODO: This is very crude, should use cross-validation
     dev_sample_index = -1 * int(FLAGS.dev_sample_percentage * float(len(y)))
     x_train, x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
@@ -113,7 +118,7 @@ def train():
 
             # Train Summaries
             train_summary_op = tf.summary.merge([loss_summary, acc_summary])
-            train_summary_dir = os.path.join(out_dir, "summaries", "train")
+            train_summary_dir = os.path.join(out_dir, "summaries", "corpora")
             train_summary_writer = tf.summary.FileWriter(train_summary_dir, sess.graph)
 
             # Dev summaries
