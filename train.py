@@ -14,8 +14,10 @@ import nsml
 
 
 # Data loading params
-tf.flags.DEFINE_string("train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of train data")
-tf.flags.DEFINE_string("train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of train data")
+# tf.flags.DEFINE_string("train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of train data")
+# tf.flags.DEFINE_string("train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of train data")
+tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of train data")
+tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of train data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
 tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in train/test data")
 
