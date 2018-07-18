@@ -89,17 +89,17 @@ def eval():
 
             is_target = np.not_equal(target_eval, 0).astype(float)
             accuracy = np.sum(np.equal(all_predictions, target_eval).astype(float) * is_target) / np.sum(is_target)
-            print("Total number of test examples: {}".format(len(target_eval)))
+            print("Total number of test examples: {}\n".format(len(target_eval)))
             print("Accuracy: {:g}".format(accuracy))
 
             # BLEU Score
             preds = [[target_vocab_processor.vocabulary_.reverse(idx) for idx in sent] for sent in all_predictions]
             origins = [[sent.split()] for sent in target_sent]
             score = corpus_bleu(list_of_references=origins, hypotheses=preds)
-            print("BLEU Score :", score*100)
+            print("BLEU Score : {:g}\n".format(score*100))
 
             # Samples of Translation Result
-            random_idx = np.random.randint(len(target_vocab_processor.vocabulary_), 5)
+            random_idx = np.random.randint(len(source_sent), size=5)
             for idx in random_idx:
                 print("Sample #", idx)
                 print("Source :", source_sent[idx])
