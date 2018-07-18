@@ -8,6 +8,7 @@ import data_helpers
 
 import nsml
 
+
 # Parameters
 # ==================================================
 
@@ -18,10 +19,10 @@ tf.flags.DEFINE_string("nsml_train_target_dir",  nsml.DATASET_PATH + "/train/tra
 tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of corpora data")
 tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of corpora data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
-tf.flags.DEFINE_integer("max_sentence_length", 10, "Max sentence length in corpora/test data")
+tf.flags.DEFINE_integer("source_max_sentence_length", 10, "Max sentence length in corpora/test data")
+tf.flags.DEFINE_integer("target_max_sentence_length", 10, "Max sentence length in corpora/test data")
 
 # Model Hyperparameters
-tf.flags.DEFINE_string("word2vec", None, "word2vec")
 tf.flags.DEFINE_integer("hidden_size", 512, "Size of LSTM hidden layer")
 tf.flags.DEFINE_integer("ff_hidden_size", 512, "Size of LSTM hidden layer")
 tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
@@ -48,13 +49,15 @@ FLAGS = tf.flags.FLAGS
 def train():
     with tf.device('/cpu:0'):
         if FLAGS.nsml:
-            source, target = data_helpers.load_train_data(FLAGS.nsml_train_source_dir,
-                                                          FLAGS.nsml_train_target_dir,
-                                                          FLAGS.max_sentence_length)
+            source_sent, target_sent = data_helpers.load_train_data(FLAGS.nsml_train_source_dir,
+                                                                    FLAGS.nsml_train_target_dir,
+                                                                    FLAGS.source_max_sentence_length,
+                                                                    FLAGS.target_max_sentence_length)
         else:
-            source, target = data_helpers.load_train_data(FLAGS.train_source_dir,
-                                                          FLAGS.train_target_dir,
-                                                          FLAGS.max_sentence_length)
+            source_sent, target_sent = data_helpers.load_train_data(FLAGS.train_source_dir,
+                                                                    FLAGS.train_target_dir,
+                                                                    FLAGS.source_max_sentence_length,
+                                                                    FLAGS.target_max_sentence_length)
 
     # Build vocabulary
     # Example: x_text[3] = "A misty ridge uprises from the surge."
@@ -62,12 +65,12 @@ def train():
     # =>
     # [27 39 40 41 42  1 43  0  0 ... 0]
     # dimension = FLAGS.max_sentence_length
-    source_vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(FLAGS.max_sentence_length)
-    x = np.array(list(source_vocab_processor.fit_transform(source)))
+    source_vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(FLAGS.source_max_sentence_length)
+    x = np.array(list(source_vocab_processor.fit_transform(["_START_ _EOS_ _PAD_"] + source_sent)))
     print("Source Language Vocabulary Size: {:d}".format(len(source_vocab_processor.vocabulary_)))
 
-    target_vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(FLAGS.max_sentence_length)
-    y = np.array(list(target_vocab_processor.fit_transform(target)))
+    target_vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(FLAGS.target_max_sentence_length)
+    y = np.array(list(target_vocab_processor.fit_transform(["_START_ _EOS_ _PAD_"] + target_sent)))
     print("Target Language Vocabulary Size: {:d}".format(len(target_vocab_processor.vocabulary_)))
 
     print("x = {0}".format(x.shape))
@@ -118,7 +121,7 @@ def train():
 
             # Train Summaries
             train_summary_op = tf.summary.merge([loss_summary, acc_summary])
-            train_summary_dir = os.path.join(out_dir, "summaries", "corpora")
+            train_summary_dir = os.path.join(out_dir, "summaries", "train")
             train_summary_writer = tf.summary.FileWriter(train_summary_dir, sess.graph)
 
             # Dev summaries
@@ -134,37 +137,11 @@ def train():
             saver = tf.train.Saver(tf.global_variables(), max_to_keep=FLAGS.num_checkpoints)
 
             # Write vocabulary
-            source_vocab_processor.save(os.path.join(out_dir, "vocab"))
+            source_vocab_processor.save(os.path.join(out_dir, "source_vocab"))
+            target_vocab_processor.save(os.path.join(out_dir, "target_vocab"))
 
             # Initialize all variables
             sess.run(tf.global_variables_initializer())
-
-            # Pre-trained word2vec
-            if FLAGS.word2vec:
-                # initial matrix with random uniform
-                initW = np.random.uniform(-0.25, 0.25, (len(source_vocab_processor.vocabulary_), FLAGS.embedding_dim))
-                # load any vectors from the word2vec
-                print("Load word2vec file {0}".format(FLAGS.word2vec))
-                with open(FLAGS.word2vec, "rb") as f:
-                    header = f.readline()
-                    vocab_size, layer1_size = map(int, header.split())
-                    binary_len = np.dtype('float32').itemsize * layer1_size
-                    for line in range(vocab_size):
-                        word = []
-                        while True:
-                            ch = f.read(1).decode('latin-1')
-                            if ch == ' ':
-                                word = ''.join(word)
-                                break
-                            if ch != '\n':
-                                word.append(ch)
-                        idx = source_vocab_processor.vocabulary_.get(word)
-                        if idx != 0:
-                            initW[idx] = np.fromstring(f.read(binary_len), dtype='float32')
-                        else:
-                            f.read(binary_len)
-                sess.run(model.W_text.assign(initW))
-                print("Success to load pre-trained word2vec model!\n")
 
             # Generate batches
             batches = data_helpers.batch_iter(
@@ -175,8 +152,8 @@ def train():
 
                 # Train
                 feed_dict = {
-                    model.source: x_batch,
-                    model.target: y_batch
+                    model.encoder_x: x_batch,
+                    model.decoder_y: y_batch
                 }
 
                 _, step, summaries, loss, accuracy = sess.run(
@@ -202,8 +179,8 @@ def train():
                         x_batch_dev, y_batch_dev = zip(*batch_dev)
 
                         feed_dict_dev = {
-                            model.source: x_batch_dev,
-                            model.target: y_batch_dev
+                            model.encoder_x: x_batch_dev,
+                            model.decoder_y: y_batch_dev
                         }
 
                         summaries_dev, loss, accuracy = sess.run(

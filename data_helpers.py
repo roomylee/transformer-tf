@@ -26,7 +26,7 @@ def clean_str(string):
     return string.strip().lower()
 
 
-def load_train_data(source_path, target_path, MAX_LENGTH=10):
+def load_train_data(source_path, target_path, SOURCE_MAX_LENGTH=10, TARGET_MAX_LENGTH=10):
     source_sents = []
     target_sents = []
 
@@ -35,14 +35,14 @@ def load_train_data(source_path, target_path, MAX_LENGTH=10):
         if (s and s[0] != "<") and (t and t[0] != "<"):
             slen = len(s.split())
             tlen = len(t.split())
-            if slen < MAX_LENGTH and tlen < MAX_LENGTH:
-                source_sents.append(clean_str(s) + " __EOS__" + (" __PAD__" * (MAX_LENGTH - slen - 1)))
-                target_sents.append(clean_str(t) + " __EOS__" + (" __PAD__" * (MAX_LENGTH - tlen - 1)))
+            if slen < SOURCE_MAX_LENGTH and tlen < TARGET_MAX_LENGTH:
+                source_sents.append(clean_str(s) + " _EOS_" + (" _PAD_" * (SOURCE_MAX_LENGTH - slen - 1)))
+                target_sents.append(clean_str(t) + " _EOS_" + (" _PAD_" * (TARGET_MAX_LENGTH - tlen - 1)))
 
     return source_sents, target_sents
 
 
-def load_test_data(source_path, target_path, MAX_LENGTH=10):
+def load_test_data(source_path, target_path, SOURCE_MAX_LENGTH=10, TARGET_MAX_LENGTH=10):
     source_sents = []
     target_sents = []
 
@@ -51,9 +51,9 @@ def load_test_data(source_path, target_path, MAX_LENGTH=10):
         if (s and s[:4] == "<seg") and (t and t[:4] == "<seg"):
             slen = len(s.split())
             tlen = len(t.split())
-            if slen < MAX_LENGTH and tlen < MAX_LENGTH:
-                source_sents.append(clean_str(s) + " </S>" + (" <PAD>" * (MAX_LENGTH - slen - 1)))
-                target_sents.append(clean_str(t) + " </S>" + (" <PAD>" * (MAX_LENGTH - tlen - 1)))
+            if slen < SOURCE_MAX_LENGTH and tlen < TARGET_MAX_LENGTH:
+                source_sents.append(clean_str(s) + " _EOS_" + (" _PAD_" * (SOURCE_MAX_LENGTH - slen - 1)))
+                target_sents.append(clean_str(t) + " _EOS_" + (" _PAD_" * (TARGET_MAX_LENGTH - tlen - 1)))
 
     return source_sents, target_sents
 
