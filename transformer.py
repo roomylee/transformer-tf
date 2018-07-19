@@ -4,7 +4,7 @@ import numpy as np
 
 class Transformer:
     def __init__(self, sequence_length, source_vocab_size, target_vocab_size,
-                 hidden_size, ff_hidden_size, num_stack, num_head):
+                 dim_model, dim_ff, num_stack, num_head):
 
         # Placeholders for Encoder Input (= Source Sentence)
         self.encoder_x = tf.placeholder(tf.int32, shape=[None, sequence_length], name='encoder_x')
@@ -18,13 +18,13 @@ class Transformer:
         with tf.variable_scope("encoder"):
             # Embeddings
             with tf.device('/cpu:0'), tf.variable_scope("source-embedding"):
-                self.W_source_embedding = tf.get_variable("W", shape=[source_vocab_size, hidden_size],
+                self.W_source_embedding = tf.get_variable("W", shape=[source_vocab_size, dim_model],
                                                           dtype=tf.float32, initializer=initializer)
                 self.source_embedded_chars = tf.nn.embedding_lookup(self.W_source_embedding, self.encoder_x)
 
             # Positional Encoding
             with tf.variable_scope("positional-encoding"):
-                self.pos_enc = self.position_encoding(sequence_length, hidden_size)
+                self.pos_enc = self.position_encoding(sequence_length, dim_model)
                 self.enc = tf.add(self.source_embedded_chars, self.pos_enc, name="encoder_input")
 
             for i in range(num_stack):
@@ -32,25 +32,25 @@ class Transformer:
                     # Multi-head Attention (self attention)
                     with tf.variable_scope("multihead-attention"):
                         self.mh = self.multihead_attention(query=self.enc, key=self.enc, value=self.enc,
-                                                           num_head=num_head, hidden_size=hidden_size)
+                                                           dim_model=dim_model, num_head=num_head)
                         # Residual & Layer Normalization
                         self.mh = tf.contrib.layers.layer_norm(self.enc + self.mh)
 
                     # Position-wise Feed Forward
                     with tf.variable_scope("position-wise-feed-forward"):
-                        self.ff = self.feedforward(self.mh, hidden_size, ff_hidden_size)
+                        self.ff = self.feedforward(self.mh, dim_model, dim_ff)
                         # Residual & Layer Normalization
                         self.enc = tf.contrib.layers.layer_norm(self.mh + self.ff)
 
         with tf.variable_scope("decoder"):
             with tf.device('/cpu:0'), tf.variable_scope("target-embedding"):
-                self.W_target_embedding = tf.get_variable("W", shape=[target_vocab_size, hidden_size],
+                self.W_target_embedding = tf.get_variable("W", shape=[target_vocab_size, dim_model],
                                                           dtype=tf.float32, initializer=initializer)
                 self.target_embedded_chars = tf.nn.embedding_lookup(self.W_target_embedding, self.decoder_x)
 
             # Position Encoding
             with tf.variable_scope("positional-encoding"):
-                self.pos_enc = self.position_encoding(sequence_length, hidden_size)
+                self.pos_enc = self.position_encoding(sequence_length, dim_model)
                 self.dec = tf.add(self.target_embedded_chars, self.pos_enc, name="decoder_input")
 
             for i in range(num_stack):
@@ -58,20 +58,20 @@ class Transformer:
                     # Masked Multi-head Attention (self attention)
                     with tf.variable_scope("masked-multihead-attention"):
                         self.mask_mh = self.multihead_attention(query=self.dec, key=self.dec, value=self.dec,
-                                                                num_head=num_head, hidden_size=hidden_size, masked=True)
+                                                                dim_model=dim_model, num_head=num_head, masked=True)
                         # Residual & Layer Normalization
                         self.mask_mh = tf.contrib.layers.layer_norm(self.dec + self.mask_mh)
 
                     # Multi-head Attention (attention with encoder)
                     with tf.variable_scope("multihead-attention"):
                         self.mh = self.multihead_attention(query=self.mask_mh, key=self.enc, value=self.enc,
-                                                           num_head=num_head, hidden_size=hidden_size)
+                                                           dim_model=dim_model, num_head=num_head)
                         # Residual & Layer Normalization
                         self.mh = tf.contrib.layers.layer_norm(self.mask_mh + self.mh)
 
                     # Position-wise Feed Forward
                     with tf.variable_scope("position-wise-feed-forward"):
-                        self.ff = self.feedforward(self.mh, hidden_size, ff_hidden_size)
+                        self.ff = self.feedforward(self.mh, dim_model, dim_ff)
                         # Residual & Layer Normalization
                         self.dec = tf.contrib.layers.layer_norm(self.mh + self.ff)
 
@@ -93,9 +93,9 @@ class Transformer:
                             / tf.reduce_sum(is_target)
 
     @ staticmethod
-    def position_encoding(sequence_length, hidden_size):
+    def position_encoding(sequence_length, dim_model):
         # First part of the PE function: sin and cos argument
-        position_enc = np.array([[pos / (10000 ** (2 * i / hidden_size)) for i in range(hidden_size)] for pos in range(sequence_length)])
+        position_enc = np.array([[pos / (10000 ** (2 * i / dim_model)) for i in range(dim_model)] for pos in range(sequence_length)])
 
         # Second part, apply the cosine to even columns and sin to odds.
         position_enc[:, 0::2] = np.sin(position_enc[:, 0::2])  # dim 2i
@@ -105,14 +105,15 @@ class Transformer:
         return output
 
     @staticmethod
-    def multihead_attention(query, key, value, num_head, hidden_size, masked=False):
+    def multihead_attention(query, key, value, dim_model, num_head, masked=False):
         attentions = []
         for i in range(num_head):
-            dim_k = int(hidden_size / num_head)
+            dim_k = int(dim_model / num_head)
+            dim_v = dim_k
 
             Q = tf.layers.dense(query, dim_k, activation=tf.nn.relu)
             K = tf.layers.dense(key, dim_k, activation=tf.nn.relu)
-            V = tf.layers.dense(value, dim_k, activation=tf.nn.relu)
+            V = tf.layers.dense(value, dim_v, activation=tf.nn.relu)
 
             # Scaled Dot Product Attention
             with tf.variable_scope("scaled-dot-product-attention"):
@@ -129,15 +130,15 @@ class Transformer:
             attentions.append(att_V)
 
         att_concat = tf.concat(attentions, axis=2)
-        output = tf.layers.dense(att_concat, hidden_size, activation=tf.nn.relu)
+        output = tf.layers.dense(att_concat, dim_model, activation=tf.nn.relu)
 
         return output
 
     @staticmethod
-    def feedforward(x, hidden_size, ff_hidden_size):
+    def feedforward(x, dim_model, dim_ff):
         # First Convolution
-        output = tf.layers.conv1d(inputs=x, filters=ff_hidden_size, kernel_size=1, activation=tf.nn.relu)
+        output = tf.layers.conv1d(inputs=x, filters=dim_ff, kernel_size=1, activation=tf.nn.relu)
         # Second Convolution
-        output = tf.layers.conv1d(inputs=output, filters=hidden_size, kernel_size=1, activation=tf.nn.relu)
+        output = tf.layers.conv1d(inputs=output, filters=dim_model, kernel_size=1, activation=tf.nn.relu)
 
         return output

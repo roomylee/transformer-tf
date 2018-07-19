@@ -12,20 +12,20 @@ import data_helpers
 
 
 # Data loading params
-tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of corpora data")
-tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of corpora data")
+tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of train source data")
+tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of train target data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
-tf.flags.DEFINE_integer("source_max_sentence_length", 10, "Max sentence length in corpora/test data")
-tf.flags.DEFINE_integer("target_max_sentence_length", 10, "Max sentence length in corpora/test data")
+tf.flags.DEFINE_integer("source_max_sentence_length", 10, "Max sentence length in source data")
+tf.flags.DEFINE_integer("target_max_sentence_length", 10, "Max sentence length in target data")
 
 # Model Hyperparameters
-tf.flags.DEFINE_integer("hidden_size", 512, "Size of LSTM hidden layer")
-tf.flags.DEFINE_integer("ff_hidden_size", 512, "Size of LSTM hidden layer")
-tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
-tf.flags.DEFINE_integer("num_head", 8, "Size of LSTM hidden layer")
+tf.flags.DEFINE_integer("dim_model", 512, "Dimension of Model & Embedding (d_model in paper)")
+tf.flags.DEFINE_integer("dim_ff", 2048, "Dimension of Hidden Layer of Feed Forward Network (d_ff in paper)")
+tf.flags.DEFINE_integer("num_stack", 6, "Number of Stacked Encoder/Decoder Block (N in paper)")
+tf.flags.DEFINE_integer("num_head", 8, "Number of linear projection in Multi-Head Attention (h in paper)")
 
 # Training parameters
-tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
+tf.flags.DEFINE_integer("batch_size", 32, "Batch Size")
 tf.flags.DEFINE_integer("num_epochs", 10, "Number of training epochs")
 tf.flags.DEFINE_integer("display_every", 10, "Number of iterations to display training info.")
 tf.flags.DEFINE_integer("evaluate_every", 100, "Evaluate model on dev set after this many steps")
@@ -89,8 +89,8 @@ def train():
                 sequence_length=x_train.shape[1],
                 source_vocab_size=len(source_vocab_processor.vocabulary_),
                 target_vocab_size=len(target_vocab_processor.vocabulary_),
-                hidden_size=FLAGS.hidden_size,
-                ff_hidden_size=FLAGS.ff_hidden_size,
+                dim_model=FLAGS.dim_model,
+                dim_ff=FLAGS.dim_ff,
                 num_stack=FLAGS.num_stack,
                 num_head=FLAGS.num_head
             )

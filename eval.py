@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import os
 from nltk.translate.bleu_score import corpus_bleu
+from nltk.translate.bleu_score import SmoothingFunction
 import data_helpers
 
 
@@ -9,12 +10,13 @@ import data_helpers
 # ==================================================
 
 # Data loading params
-tf.flags.DEFINE_string("test_source_dir", "corpora/IWSLT16.TED.tst2014.de-en.de.xml", "Path of corpora data")
-tf.flags.DEFINE_string("test_target_dir", "corpora/IWSLT16.TED.tst2014.de-en.en.xml", "Path of corpora data")
+tf.flags.DEFINE_string("test_source_dir", "corpora/IWSLT16.TED.tst2014.de-en.de.xml", "Path of test source data")
+tf.flags.DEFINE_string("test_target_dir", "corpora/IWSLT16.TED.tst2014.de-en.en.xml", "Path of test target data")
+tf.flags.DEFINE_string("output_dir", "results/translation_result.txt", "Path of translation results")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
-tf.flags.DEFINE_string("checkpoint_dir", "runs/1531899424/checkpoints/", "Checkpoint directory from training run")
+tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
 
 # Misc Parameters
 tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
@@ -56,8 +58,8 @@ def eval():
             saver.restore(sess, checkpoint_file)
 
             # Get the placeholders from the graph by name
-            source = graph.get_operation_by_name("source").outputs[0]
-            target = graph.get_operation_by_name("target").outputs[0]
+            source = graph.get_operation_by_name("encoder_x").outputs[0]
+            target = graph.get_operation_by_name("decoder_y").outputs[0]
 
             # Tensors we want to evaluate
             predictions = graph.get_operation_by_name("output/predictions").outputs[0]
@@ -81,21 +83,31 @@ def eval():
             print("Total number of test examples: {}\n".format(len(target_eval)))
             print("Accuracy: {:g}".format(accuracy))
 
+
+            prediction_sent = []
+            for idx_seq in all_predictions:
+                prediction_sent.append(" ".join(target_vocab_processor.vocabulary_.reverse(idx) for idx in idx_seq))
+
             # BLEU Score
-            preds = [[target_vocab_processor.vocabulary_.reverse(idx) for idx in sent] for sent in all_predictions]
-            origins = [[sent.split()] for sent in target_sent]
-            score = corpus_bleu(list_of_references=origins, hypotheses=preds)
+            list_of_references = []
+            hypotheses = []
+            for pred, target in zip(prediction_sent, target_sent):
+                if len(pred.split()) > 3 and len(target.split()) > 3:
+                    list_of_references.append([pred.split()])
+                    hypotheses.append(target.split())
+            chencherry = SmoothingFunction()
+            score = corpus_bleu(list_of_references, hypotheses, smoothing_function=chencherry.method4)
             print("BLEU Score : {:g}\n".format(score*100))
 
             # Samples of Translation Result
-            random_idx = np.random.randint(len(source_sent), size=5)
-            for idx in random_idx:
-                print("Sample #", idx)
-                print("Source :", source_sent[idx])
-                print("Target :", target_sent[idx])
-                pred = " ".join(target_vocab_processor.vocabulary_.reverse(word_idx)
-                                for word_idx in all_predictions[idx])
-                print("Predict :", pred)
+            if not os.path.exists('results'): os.mkdir('results')
+            f = open(FLAGS.output_dir, 'w')
+            for idx, (s, t, p) in enumerate(zip(source_sent, target_sent, prediction_sent)):
+                f.write("Sample #%d\n" % idx)
+                f.write("Source : %s\n" % s)
+                f.write("Target : %s\n" % t)
+                f.write("Predict : %s\n\n" % p)
+            f.close()
 
 
 def main(_):
