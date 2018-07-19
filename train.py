@@ -6,16 +6,12 @@ import time
 from transformer import Transformer
 import data_helpers
 
-import nsml
-
 
 # Parameters
 # ==================================================
 
 
 # Data loading params
-tf.flags.DEFINE_string("nsml_train_source_dir", nsml.DATASET_PATH + "/train/train.tags.de-en.de", "Path of corpora data")
-tf.flags.DEFINE_string("nsml_train_target_dir",  nsml.DATASET_PATH + "/train/train.tags.de-en.en", "Path of corpora data")
 tf.flags.DEFINE_string("train_source_dir", "corpora/train.tags.de-en.de", "Path of corpora data")
 tf.flags.DEFINE_string("train_target_dir", "corpora/train.tags.de-en.en", "Path of corpora data")
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
@@ -29,7 +25,6 @@ tf.flags.DEFINE_integer("num_stack", 6, "Dimensionality of word embedding")
 tf.flags.DEFINE_integer("num_head", 8, "Size of LSTM hidden layer")
 
 # Training parameters
-tf.flags.DEFINE_boolean("nsml", False, "training by NSML")
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
 tf.flags.DEFINE_integer("num_epochs", 10, "Number of training epochs")
 tf.flags.DEFINE_integer("display_every", 10, "Number of iterations to display training info.")
@@ -48,16 +43,10 @@ FLAGS = tf.flags.FLAGS
 
 def train():
     with tf.device('/cpu:0'):
-        if FLAGS.nsml:
-            source_sent, target_sent = data_helpers.load_train_data(FLAGS.nsml_train_source_dir,
-                                                                    FLAGS.nsml_train_target_dir,
-                                                                    FLAGS.source_max_sentence_length,
-                                                                    FLAGS.target_max_sentence_length)
-        else:
-            source_sent, target_sent = data_helpers.load_train_data(FLAGS.train_source_dir,
-                                                                    FLAGS.train_target_dir,
-                                                                    FLAGS.source_max_sentence_length,
-                                                                    FLAGS.target_max_sentence_length)
+        source_sent, target_sent = data_helpers.load_train_data(FLAGS.train_source_dir,
+                                                                FLAGS.train_target_dir,
+                                                                FLAGS.source_max_sentence_length,
+                                                                FLAGS.target_max_sentence_length)
 
     # Build vocabulary
     # Example: x_text[3] = "A misty ridge uprises from the surge."

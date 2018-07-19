@@ -4,20 +4,15 @@ import os
 from nltk.translate.bleu_score import corpus_bleu
 import data_helpers
 
-import nsml
-
 
 # Parameters
 # ==================================================
 
 # Data loading params
-tf.flags.DEFINE_string("nsml_test_source_dir", nsml.DATASET_PATH + "/test/IWSLT16.TED.tst2014.de-en.de.xml", "Path of corpora data")
-tf.flags.DEFINE_string("nsml_test_target_dir",  nsml.DATASET_PATH + "/test/IWSLT16.TED.tst2014.de-en.en.xml", "Path of corpora data")
 tf.flags.DEFINE_string("test_source_dir", "corpora/IWSLT16.TED.tst2014.de-en.de.xml", "Path of corpora data")
 tf.flags.DEFINE_string("test_target_dir", "corpora/IWSLT16.TED.tst2014.de-en.en.xml", "Path of corpora data")
 
 # Eval Parameters
-tf.flags.DEFINE_boolean("nsml", False, "training by NSML")
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size")
 tf.flags.DEFINE_string("checkpoint_dir", "runs/1531899424/checkpoints/", "Checkpoint directory from training run")
 
@@ -39,16 +34,10 @@ def eval():
     target_max_sentence_length = len(list(target_vocab_processor.transform(['test']))[0])
 
     with tf.device('/cpu:0'):
-        if FLAGS.nsml:
-            source_sent, target_sent = data_helpers.load_test_data(FLAGS.nsml_test_source_dir,
-                                                                   FLAGS.nsml_test_target_dir,
-                                                                   source_max_sentence_length,
-                                                                   target_max_sentence_length)
-        else:
-            source_sent, target_sent = data_helpers.load_test_data(FLAGS.test_source_dir,
-                                                                   FLAGS.test_target_dir,
-                                                                   source_max_sentence_length,
-                                                                   target_max_sentence_length)
+        source_sent, target_sent = data_helpers.load_test_data(FLAGS.test_source_dir,
+                                                               FLAGS.test_target_dir,
+                                                               source_max_sentence_length,
+                                                               target_max_sentence_length)
 
     source_eval = np.array(list(source_vocab_processor.transform(source_sent)))
     target_eval = np.array(list(target_vocab_processor.transform(target_sent)))
