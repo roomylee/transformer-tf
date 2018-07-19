@@ -1,0 +1,920 @@
+Sample #0
+Source : aber ich habe es nicht hingekriegt _EOS_
+Target : but i didn't handle it _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #1
+Source : ich hielt dagegen _EOS_ _PAD_ _PAD_ _PAD_
+Target : i pushed back _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #2
+Source : oh yeah ihr seid alle unglaublich _EOS_
+Target : oh yay y'all's awesome _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #3
+Source : das stimmt _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : it's true _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #4
+Source : stimmt das nicht _EOS_ _PAD_ _PAD_ _PAD_
+Target : isn't that true _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #5
+Source : gar nichts _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : nothing happens _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #6
+Source : macht das nicht _EOS_ _PAD_ _PAD_ _PAD_
+Target : do not do that _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #7
+Source : das ist prokastination _EOS_ _PAD_ _PAD_ _PAD_
+Target : that's procrastination _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #8
+Source : was geschah also mit emma _EOS_ _PAD_
+Target : so what happened to emma _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #9
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #10
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #11
+Source : aber meine mutter sagte nein _EOS_ _PAD_
+Target : but my tiger mother said no _EOS_
+Predict : it is is you you you you it it it
+
+Sample #12
+Source : aber das ist so ungerecht _EOS_ _PAD_
+Target : but that's so unfair _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #13
+Source : also wendete ich mich b chern zu _EOS_
+Target : i turned to books _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #14
+Source : die bibel ist interessant aber seltsam _EOS_
+Target : the bible is interesting but strange _EOS_
+Predict : it is is you you you you it it it
+
+Sample #15
+Source : dies gew hrt viele einblicke _EOS_ _PAD_ _PAD_
+Target : it offers many insights _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #16
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #17
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #18
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #19
+Source : und dann tat ich es _EOS_ _PAD_
+Target : and then i did it _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #20
+Source : alle einser _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : all of those a's _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #21
+Source : ich f hlte mich richtig gut _EOS_ _PAD_
+Target : i felt great _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #22
+Source : ich wurde nie erwischt _EOS_ _PAD_ _PAD_
+Target : i was never caught _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #23
+Source : eifersucht verbl fft mich _EOS_ _PAD_ _PAD_ _PAD_
+Target : jealousy baffles me _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #24
+Source : also keine untreue helena keine odyssee _EOS_
+Target : well no faithless helen no odyssey _EOS_
+Predict : it is is you you you you it it it
+
+Sample #25
+Source : kein shakespeare _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : no shakespeare _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #26
+Source : wir vergessen wie erbarmungslos er ist _EOS_
+Target : we forget how pitiless he is _EOS_
+Predict : it is is you you you you it it it
+
+Sample #27
+Source : eifersucht ist erm dend _EOS_ _PAD_ _PAD_ _PAD_
+Target : jealousy is exhausting _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #28
+Source : was mag die eifersucht _EOS_ _PAD_ _PAD_
+Target : and what does jealousy like _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #29
+Source : eifersucht mag informationen _EOS_ _PAD_ _PAD_ _PAD_
+Target : jealousy likes information _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #30
+Source : eifersucht mag details _EOS_ _PAD_ _PAD_ _PAD_
+Target : jealousy likes details _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #31
+Source : eifersucht mag fotos _EOS_ _PAD_ _PAD_ _PAD_
+Target : jealousy likes photos _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #32
+Source : freud sollte sp ter dar ber schreiben _EOS_ _PAD_
+Target : freud would write about this later _EOS_
+Predict : it is is you you you you it it it
+
+Sample #33
+Source : ein ganzes jahr lang _EOS_ _PAD_ _PAD_
+Target : for a year a year _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #34
+Source : das ist etwas aus einem roman _EOS_
+Target : this is something from a novel _EOS_
+Predict : it is is you you you you it it it
+
+Sample #35
+Source : das ist eine methode _EOS_ _PAD_ _PAD_
+Target : that's one way to go _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #36
+Source : wir leben in einer eifersuchtsanf lligen zeit _EOS_
+Target : we live in jealous times _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #37
+Source : das ist mir so vertraut _EOS_ _PAD_
+Target : oh it's so familiar to me _EOS_
+Predict : it is is you you you you it it it
+
+Sample #38
+Source : wir sind stolz auf sie _EOS_ _PAD_
+Target : we're proud of you _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #39
+Source : ist es denn wirklich so einfach _EOS_
+Target : could it be so simple though _EOS_
+Predict : it is is you you you you it it it
+
+Sample #40
+Source : wir k nnten uns aneinander ausrichten _EOS_ _PAD_
+Target : we could align ourselves with it _EOS_
+Predict : it is is you you you you it it it
+
+Sample #41
+Source : aber ich mag notfallpl ne _EOS_ _PAD_ _PAD_
+Target : but i like contingency plans _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #42
+Source : literatur allein entr tselt die eifersucht _EOS_ _PAD_
+Target : fiction alone demystifies jealousy _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #43
+Source : wir befinden uns in exzellenter gesellschaft _EOS_
+Target : we are in excellent company _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #44
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #45
+Source : es war ein wundersch ner tag _EOS_ _PAD_
+Target : it was a beautiful day _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #46
+Source : der wald funkelte _EOS_ _PAD_ _PAD_ _PAD_
+Target : the forest was sparkling _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #47
+Source : wir kamen zu unserem zeltplatz _EOS_ _PAD_
+Target : we got to our campsite _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #48
+Source : wer r umt nach uns auf _EOS_ _PAD_
+Target : who cleans up after us _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #49
+Source : ich musste noch tiefer gehen _EOS_ _PAD_
+Target : i needed to go deeper _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #50
+Source : jeder fragt nach dem gestank _EOS_ _PAD_
+Target : everyone asks about the smell _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #51
+Source : dann ist da die gefahr _EOS_ _PAD_
+Target : then there's the danger _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #52
+Source : er h rt nicht auf zu entstehen _EOS_
+Target : it never stops coming _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #53
+Source : er muss immer in bewegung sein _EOS_
+Target : it must always be in motion _EOS_
+Predict : it is is you you you you it it it
+
+Sample #54
+Source : und dann ist da das stigma _EOS_
+Target : and then there's the stigma _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #55
+Source : die wirtschaft braucht sie _EOS_ _PAD_ _PAD_
+Target : the economy needs them _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #56
+Source : alles wird gut _EOS_ _PAD_ _PAD_ _PAD_
+Target : we're going to be okay _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #57
+Source : alles wird gut _EOS_ _PAD_ _PAD_ _PAD_
+Target : we are going to be okay _EOS_
+Predict : it is is you you you you it it it
+
+Sample #58
+Source : es ist eine bemerkenswerte statistik _EOS_ _PAD_
+Target : it's a remarkable statistic _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #59
+Source : hallo tedwomen was geht _EOS_ _PAD_ _PAD_
+Target : hello tedwomen what's up _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #60
+Source : das reicht nicht _EOS_ _PAD_ _PAD_ _PAD_
+Target : not good enough _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #61
+Source : hallo tedwomen was geht _EOS_ _PAD_ _PAD_
+Target : hello tedwomen what is up _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #62
+Source : schaut mal _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : look _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #63
+Source : zerebralparese ist nicht genetisch _EOS_ _PAD_ _PAD_
+Target : cp is not genetic _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #64
+Source : kommt mal kurz mit _EOS_ _PAD_ _PAD_
+Target : come on a journey with me _EOS_
+Predict : it is is you you you you it it it
+
+Sample #65
+Source : sechzehn leere behindertenparkpl tze _EOS_ _PAD_ _PAD_ _PAD_
+Target : sixteen empty handicapped spaces _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #66
+Source : ich habe am broadway gesteppt _EOS_ _PAD_
+Target : i have tapdanced on broadway _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #67
+Source : ja am broadway total verr ckt _EOS_ _PAD_
+Target : yeah on broadway it's crazy _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #68
+Source : alle liebten mich _EOS_ _PAD_ _PAD_ _PAD_
+Target : everybody loved me _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #69
+Source : aber ich bekam nie eine rolle _EOS_
+Target : but i never got cast _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #70
+Source : ich war ein m dchen mit cp _EOS_
+Target : i was a girl with cp _EOS_
+Predict : it is is you you you you it it it
+
+Sample #71
+Source : ich habe zerebralparese _EOS_ _PAD_ _PAD_ _PAD_
+Target : i have cerebral palsy _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #72
+Source : endlich frei endlich frei _EOS_ _PAD_ _PAD_
+Target : free at last free at last _EOS_
+Predict : it is is you you you you it it it
+
+Sample #73
+Source : ich bekam die rolle nicht _EOS_ _PAD_
+Target : i didn't get the part _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #74
+Source : sherry brown bekam die rolle _EOS_ _PAD_
+Target : sherry brown got the part _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #75
+Source : die uni imitierte das leben _EOS_ _PAD_
+Target : college was imitating life _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #76
+Source : mein traum wurde wahr _EOS_ _PAD_ _PAD_
+Target : my dream was coming true _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #77
+Source : sie stellten nur perfekte leute ein _EOS_
+Target : they only hired perfect people _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #78
+Source : also wurde ich komikerin _EOS_ _PAD_ _PAD_
+Target : so i became a comic _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #79
+Source : mein gro er durchbruch war _EOS_ _PAD_
+Target : my big break came in _EOS_
+Predict : it is is you you you you it it it
+
+Sample #80
+Source : und wir waren live _EOS_ _PAD_ _PAD_
+Target : and we were live right _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #81
+Source : ey ist die bekloppt _EOS_ _PAD_ _PAD_
+Target : yo is she retarded _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #82
+Source : und mein favorit armer h ngelippenterrorist _EOS_ _PAD_
+Target : and my favorite poor gumbymouth terrorist _EOS_
+Predict : it is is you you you you it it it
+
+Sample #83
+Source : hat sie ne krankheit _EOS_ _PAD_ _PAD_
+Target : what does she suffer from _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #84
+Source : wir sollten f r sie beten _EOS_ _PAD_
+Target : we should really pray for her _EOS_
+Predict : it is is you you you you it it it
+
+Sample #85
+Source : oder vielleicht nicht _EOS_ _PAD_ _PAD_ _PAD_
+Target : or maybe not _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #86
+Source : doch warum gingen sie _EOS_ _PAD_ _PAD_
+Target : so why did they go _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #87
+Source : man h rt es berall _EOS_ _PAD_ _PAD_
+Target : you hear it all the time _EOS_
+Predict : it is is you you you you it it it
+
+Sample #88
+Source : was ist passiert _EOS_ _PAD_ _PAD_ _PAD_
+Target : what happened _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #89
+Source : schwierige probleme sind schwierig _EOS_ _PAD_ _PAD_
+Target : hard problems are hard _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #90
+Source : es nicht das jahr _EOS_ _PAD_
+Target : it is not _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #91
+Source : er war nur drei tage entfernt _EOS_
+Target : it was just three days away _EOS_
+Predict : it is is you you you you it it it
+
+Sample #92
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you very much _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #93
+Source : einem sprechenden pferd _EOS_ _PAD_ _PAD_ _PAD_
+Target : it's a talking horse _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #94
+Source : okay jetzt ffne die augen _EOS_ _PAD_
+Target : okay open your eyes _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #95
+Source : das ist verr ckt _EOS_ _PAD_ _PAD_ _PAD_
+Target : i was like this is unbelievable _EOS_
+Predict : it is is you you you you it it it
+
+Sample #96
+Source : kennst du britney spears _EOS_ _PAD_ _PAD_
+Target : do you know britney spears _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #97
+Source : ich was nee wieso _EOS_ _PAD_ _PAD_
+Target : i'm like what no why _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #98
+Source : das hier ist zum beispiel ep _EOS_
+Target : this is a guy called ep _EOS_
+Predict : it is is you you you you it it it
+
+Sample #99
+Source : kim peek kennen _EOS_ _PAD_ _PAD_ _PAD_
+Target : this is kim peek _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #100
+Source : die antwort war nein _EOS_ _PAD_ _PAD_
+Target : the answer was no _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #101
+Source : ja _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : yeah _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #102
+Source : das ist sein name _EOS_ _PAD_ _PAD_
+Target : that's his name _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #103
+Source : was geht hier vor sich _EOS_ _PAD_
+Target : what's going on here _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #104
+Source : b cker tragen komische wei e m tzen _EOS_ _PAD_
+Target : bakers wear funny white hats _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #105
+Source : b cker haben mehl an ihren h nden _EOS_
+Target : bakers have flour on their hands _EOS_
+Predict : it is is you you you you it it it
+
+Sample #106
+Source : vielleicht kennen wir sogar einen b cker _EOS_
+Target : maybe we even know a baker _EOS_
+Predict : it is is you you you you it it it
+
+Sample #107
+Source : wie funktioniert es also _EOS_ _PAD_ _PAD_
+Target : so how does this work _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #108
+Source : aber es gab da ein problem _EOS_
+Target : but there was a problem _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #109
+Source : vielleicht ein gedicht oder _EOS_ _PAD_ _PAD_
+Target : maybe it was a poem _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #110
+Source : ich konnte mir das niemals vorstellen _EOS_
+Target : i never would have expected that _EOS_
+Predict : it is is you you you you it it it
+
+Sample #111
+Source : ich vertiefte mich darin _EOS_ _PAD_ _PAD_
+Target : and i got pretty into it _EOS_
+Predict : it is is you you you you it it it
+
+Sample #112
+Source : das sind nur tricks _EOS_ _PAD_ _PAD_
+Target : these are just tricks _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #113
+Source : gute ged chtnisse sind antrainiert _EOS_ _PAD_ _PAD_
+Target : great memories are learned _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #114
+Source : aber es sind keine abk rzungen _EOS_ _PAD_
+Target : but there actually are no shortcuts _EOS_
+Predict : it is is you you you you it it it
+
+Sample #115
+Source : danke _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #116
+Source : ich gab hausaufgaben auf _EOS_ _PAD_ _PAD_
+Target : i gave out homework assignments _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #117
+Source : das lie mich nachdenken _EOS_ _PAD_ _PAD_
+Target : and that got me thinking _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #118
+Source : uns es war nicht soziale intelligenz _EOS_
+Target : and it wasn't social intelligence _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #119
+Source : es war durchhalteverm gen _EOS_ _PAD_ _PAD_ _PAD_
+Target : it was grit _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #120
+Source : durchhalteverm gen ist stehverm gen _EOS_ _PAD_ _PAD_ _PAD_
+Target : grit is having stamina _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #121
+Source : aber wir brauchen mehr _EOS_ _PAD_ _PAD_
+Target : but we need more _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #122
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #123
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you very much _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #124
+Source : mir fehlt der berblick _EOS_ _PAD_ _PAD_
+Target : i don't have an overview _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #125
+Source : aber ist das ein guter beweis _EOS_
+Target : but is that good evidence _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #126
+Source : was k nnten sie sonst erheben _EOS_ _PAD_
+Target : what else can they record _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #127
+Source : vertrauen sie fischh ndlern _EOS_ _PAD_ _PAD_ _PAD_
+Target : do you trust fishmongers _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #128
+Source : vertrauen sie grundschullehrern _EOS_ _PAD_ _PAD_ _PAD_
+Target : do you trust elementary school teachers _EOS_
+Predict : it is is you you you you it it it
+
+Sample #129
+Source : v llig rational _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : that's a perfectly rational thing _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #130
+Source : einfach _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : simple _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #131
+Source : zweitens kommen wir zum ziel _EOS_ _PAD_
+Target : secondly what about the aim _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #132
+Source : vertrauen ist die reaktion _EOS_ _PAD_ _PAD_
+Target : trust is the response _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #133
+Source : so viel also zum ziel _EOS_ _PAD_
+Target : so so much for the aim _EOS_
+Predict : it is is you you you you it it it
+
+Sample #134
+Source : und nun zur aufgabe _EOS_ _PAD_ _PAD_
+Target : now thirdly the task _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #135
+Source : wie geht das _EOS_ _PAD_ _PAD_ _PAD_
+Target : how to do it _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #136
+Source : danke _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thanks _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #137
+Source : er hat diesen trend nicht gestartet _EOS_
+Target : it did not start that trend _EOS_
+Predict : it is is you you you you it it it
+
+Sample #138
+Source : genau _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : yeah _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #139
+Source : aber so passiert es nicht _EOS_ _PAD_
+Target : but that's not how it happens _EOS_
+Predict : it is is you you you you it it it
+
+Sample #140
+Source : warum stehst du da noch rum _EOS_
+Target : why are you still standing there _EOS_
+Predict : it is is you you you you it it it
+
+Sample #141
+Source : es gibt keine vorbilder f r sie _EOS_
+Target : there's no models for them _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #142
+Source : verstanden dankesch n _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : right thank you _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #143
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you very much _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #144
+Source : so stellen sich manche hollywood vor _EOS_
+Target : that's hollywood for you _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #145
+Source : elf das ist nicht bel _EOS_ _PAD_
+Target : eleven it's not bad _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #146
+Source : sie besagt dass _EOS_ _PAD_ _PAD_ _PAD_
+Target : here's what it said _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #147
+Source : was schaffen sie nicht zu lernen _EOS_
+Target : what are they failing to learn _EOS_
+Predict : it is is you you you you it it it
+
+Sample #148
+Source : nehmen wir diese geschichte so auf _EOS_
+Target : are we soaking up that story _EOS_
+Predict : it is is you you you you it it it
+
+Sample #149
+Source : obiwan _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : obiwan _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #150
+Source : obiwan kenobi und glinda _EOS_ _PAD_ _PAD_
+Target : obiwan kenobi and glinda _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #151
+Source : au erdem sind sie anf hrer _EOS_ _PAD_ _PAD_
+Target : now they are leaders _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #152
+Source : ich m chte mehr aufgaben wie diese _EOS_
+Target : i want more quests like that _EOS_
+Predict : it is is you you you you it it it
+
+Sample #153
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #154
+Source : schlie lich heiratet er _EOS_ _PAD_ _PAD_ _PAD_
+Target : he eventually gets married _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #155
+Source : er beginnt ein neues leben _EOS_ _PAD_
+Target : he starts this new life _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #156
+Source : sein leben hat einen sinn _EOS_ _PAD_
+Target : he has a purpose in life _EOS_
+Predict : it is is you you you you it it it
+
+Sample #157
+Source : er hatte gewartet _EOS_ _PAD_ _PAD_ _PAD_
+Target : he was waiting _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #158
+Source : sie machen eigentlich gar nichts _EOS_ _PAD_
+Target : they pretty much do nothing _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #159
+Source : w re ich terrorist geworden _EOS_ _PAD_ _PAD_
+Target : would i have become a terrorist _EOS_
+Predict : it is is you you you you it it it
+
+Sample #160
+Source : sie suchten leute wie ihn _EOS_ _PAD_
+Target : they sought people like him out _EOS_
+Predict : it is is you you you you it it it
+
+Sample #161
+Source : er er ffnete eine motorradgesch ft _EOS_ _PAD_ _PAD_
+Target : he started a motorbike company _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #162
+Source : was macht den unterschied aus _EOS_ _PAD_
+Target : what makes his story different _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #163
+Source : also sah mohamed eine gelegenheit _EOS_ _PAD_
+Target : so mohamed saw an opportunity _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #164
+Source : mohamed verkauft nicht einfach nur blumen _EOS_
+Target : mohamed is not simply selling flowers _EOS_
+Predict : it is is you you you you it it it
+
+Sample #165
+Source : ich glaube er verkauft hoffnung _EOS_ _PAD_
+Target : i believe he is selling hope _EOS_
+Predict : it is is you you you you it it it
+
+Sample #166
+Source : vielen dank _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #167
+Source : danke vielmals _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you very much _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #168
+Source : danke _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : thank you _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #169
+Source : sind sie bereit _EOS_ _PAD_ _PAD_ _PAD_
+Target : you are ready _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #170
+Source : daraus wird ein mund _EOS_ _PAD_ _PAD_
+Target : you get a mouth _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #171
+Source : mensch _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : person _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #172
+Source : das ist ein baum _EOS_ _PAD_ _PAD_
+Target : this is a tree _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #173
+Source : baum _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : tree _EOS_ _PAD_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #174
+Source : das ist ein berg _EOS_ _PAD_ _PAD_
+Target : this is a mountain _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #175
+Source : die sonne _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : the sun _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #176
+Source : der mond _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : the moon _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #177
+Source : diese acht schriftzeichen sind radikale _EOS_ _PAD_
+Target : i call these eight characters radicals _EOS_
+Predict : it is is you you you you it it it
+
+Sample #178
+Source : ein mensch _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : a person _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #179
+Source : erinnern sie sich an das feuer _EOS_
+Target : remember fire _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #180
+Source : zwei sonnen zusammen ergeben wohlhabend _EOS_ _PAD_
+Target : two suns together prosperous _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #181
+Source : drei zusammen sind funken _EOS_ _PAD_ _PAD_
+Target : three together that's sparkles _EOS_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #182
+Source : klopf klopf ist jemand da _EOS_ _PAD_
+Target : knock knock is anyone home _EOS_ _PAD_
+Predict : it is is you you you you it it it
+
+Sample #183
+Source : einen japaner _EOS_ _PAD_ _PAD_ _PAD_ _PAD_
+Target : a japanese person _EOS_ _PAD_ _PAD_ _PAD_
+Predict : it is is you you you you it it it
+
